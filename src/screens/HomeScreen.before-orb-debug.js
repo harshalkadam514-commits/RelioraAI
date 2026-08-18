@@ -76,17 +76,89 @@ function AnimatedCard({ children, style, onPress }) {
 
 
 function FloatingOrb() {
+  const float = useSharedValue(0);
+  const breathe = useSharedValue(0);
+  const glow = useSharedValue(0);
+
+  React.useEffect(() => {
+    float.value = withRepeat(
+      withSequence(
+        withTiming(1, {
+          duration: 4200,
+          easing: REasing.inOut(REasing.ease),
+        }),
+        withTiming(0, {
+          duration: 4200,
+          easing: REasing.inOut(REasing.ease),
+        })
+      ),
+      -1,
+      false
+    );
+
+    breathe.value = withRepeat(
+      withSequence(
+        withTiming(1, {
+          duration: 3000,
+          easing: REasing.inOut(REasing.ease),
+        }),
+        withTiming(0, {
+          duration: 3000,
+          easing: REasing.inOut(REasing.ease),
+        })
+      ),
+      -1,
+      false
+    );
+
+    glow.value = withRepeat(
+      withSequence(
+        withTiming(1, {
+          duration: 3600,
+          easing: REasing.inOut(REasing.ease),
+        }),
+        withTiming(0, {
+          duration: 3600,
+          easing: REasing.inOut(REasing.ease),
+        })
+      ),
+      -1,
+      false
+    );
+  }, []);
+
+  const floatStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: interpolate(float.value, [0, 1], [10, -14]) },
+      { translateX: interpolate(float.value, [0, 1], [-4, 5]) },
+      { scale: interpolate(breathe.value, [0, 1], [1, 1.045]) },
+    ],
+  }));
+
+  const glowStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: interpolate(float.value, [0, 1], [6, -10]) },
+      { scale: interpolate(glow.value, [0, 1], [0.96, 1.16]) },
+    ],
+    opacity: interpolate(glow.value, [0, 1], [0.16, 0.34]),
+  }));
+
   return (
-    <LinearGradient
-      colors={['#D9C8FF', colors.primary, colors.accentSoft]}
-      start={{ x: 0.1, y: 0.1 }}
-      end={{ x: 0.9, y: 0.9 }}
-      style={styles.orb}
-    >
-      <View style={styles.orbInner}>
-        <Ionicons name="sparkles" size={38} color="#FFFFFF" />
-      </View>
-    </LinearGradient>
+    <>
+      <RAnimated.View style={[styles.orbGlow, glowStyle]} pointerEvents="none" />
+      <RAnimated.View style={floatStyle}>
+        <LinearGradient
+          colors={['#D9C8FF', colors.primary, colors.accentSoft]}
+          start={{ x: 0.1, y: 0.1 }}
+          end={{ x: 0.9, y: 0.9 }}
+          style={styles.orb}
+        >
+          <View style={styles.orbInner}>
+            <Ionicons name="sparkles" size={38} color="#FFFFFF" />
+          </View>
+        </LinearGradient>
+      </RAnimated.View>
+    </>
   );
 }
 
