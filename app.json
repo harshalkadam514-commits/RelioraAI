@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "myapp",
+    "name": "Reliora AI",
     "slug": "myapp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,10 +15,19 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+      },
+      "package": "com.harsh.x32.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "03dc8586-ffd8-4969-8f79-ee34ff1d59f3"
+      }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

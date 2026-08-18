@@ -39,3 +39,26 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Reliora build artifacts
+*.apk
+*.aab
+*.ipa
+
+# Local backups
+*.backup.*
+*.bak
+*.old
+App.backup.js
+App.before-auth-fix.js
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# EAS / Expo local files
+.eas/
+
+# Local source backups
+*.pre-*.js
