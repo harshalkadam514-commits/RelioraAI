@@ -14,18 +14,22 @@ import { colors } from '../../theme';
 const AnimatedGradient =
   Animated.createAnimatedComponent(LinearGradient);
 
-function AuroraBlob({ color, style, duration, range }) {
+function FloatingOrb({ style, color, duration, delay = 0 }) {
   const progress = useSharedValue(0);
 
   useEffect(() => {
-    progress.value = withRepeat(
-      withTiming(1, {
-        duration,
-        easing: Easing.inOut(Easing.ease),
-      }),
-      -1,
-      true
-    );
+    const timer = setTimeout(() => {
+      progress.value = withRepeat(
+        withTiming(1, {
+          duration,
+          easing: Easing.inOut(Easing.ease),
+        }),
+        -1,
+        true
+      );
+    }, delay);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -33,44 +37,44 @@ function AuroraBlob({ color, style, duration, range }) {
       {
         translateX: interpolate(
           progress.value,
-          [0, 1],
-          range.x
+          [0, 0.5, 1],
+          [-35, 25, -35]
         ),
       },
       {
         translateY: interpolate(
           progress.value,
-          [0, 1],
-          range.y
+          [0, 0.5, 1],
+          [25, -35, 25]
         ),
       },
       {
         scale: interpolate(
           progress.value,
-          [0, 1],
-          [0.92, 1.12]
+          [0, 0.5, 1],
+          [0.9, 1.12, 0.9]
         ),
       },
     ],
     opacity: interpolate(
       progress.value,
-      [0, 1],
-      [0.42, 0.72]
+      [0, 0.5, 1],
+      [0.25, 0.6, 0.25]
     ),
   }));
 
   return (
     <Animated.View
       pointerEvents="none"
-      style={[styles.blob, style, animatedStyle]}
+      style={[styles.floatingOrb, style, animatedStyle]}
     >
       <LinearGradient
         colors={[
           color,
-          'rgba(255,255,255,0.04)',
+          'rgba(255,255,255,0.02)',
           'rgba(255,255,255,0)',
         ]}
-        start={{ x: 0.15, y: 0.15 }}
+        start={{ x: 0.2, y: 0.2 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFill}
       />
@@ -82,12 +86,22 @@ export default function PremiumBackground({
   children,
   intensity = 1,
 }) {
-  const atmosphere = useSharedValue(0);
+  const drift = useSharedValue(0);
+  const pulse = useSharedValue(0);
 
   useEffect(() => {
-    atmosphere.value = withRepeat(
+    drift.value = withRepeat(
       withTiming(1, {
-        duration: 9000,
+        duration: 11000,
+        easing: Easing.inOut(Easing.ease),
+      }),
+      -1,
+      true
+    );
+
+    pulse.value = withRepeat(
+      withTiming(1, {
+        duration: 6500,
         easing: Easing.inOut(Easing.ease),
       }),
       -1,
@@ -95,12 +109,67 @@ export default function PremiumBackground({
     );
   }, []);
 
-  const atmosphereStyle = useAnimatedStyle(() => ({
+  const topGlowStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: interpolate(
+          drift.value,
+          [0, 1],
+          [-45, 45]
+        ),
+      },
+      {
+        translateY: interpolate(
+          drift.value,
+          [0, 1],
+          [-25, 55]
+        ),
+      },
+      {
+        scale: interpolate(
+          pulse.value,
+          [0, 1],
+          [1, 1.18]
+        ),
+      },
+    ],
     opacity:
       interpolate(
-        atmosphere.value,
+        pulse.value,
         [0, 1],
-        [0.55, 0.9]
+        [0.42, 0.78]
+      ) * intensity,
+  }));
+
+  const bottomGlowStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: interpolate(
+          drift.value,
+          [0, 1],
+          [40, -40]
+        ),
+      },
+      {
+        translateY: interpolate(
+          drift.value,
+          [0, 1],
+          [30, -45]
+        ),
+      },
+      {
+        scale: interpolate(
+          pulse.value,
+          [0, 1],
+          [1.05, 1.22]
+        ),
+      },
+    ],
+    opacity:
+      interpolate(
+        pulse.value,
+        [0, 1],
+        [0.24, 0.52]
       ) * intensity,
   }));
 
@@ -108,66 +177,58 @@ export default function PremiumBackground({
     <View style={styles.container}>
       <LinearGradient
         colors={[
-          '#111827',
-          '#17213A',
-          '#111A2E',
+          colors.backgroundSoft,
+          colors.background,
+          '#05050C',
         ]}
-        locations={[0, 0.5, 1]}
+        locations={[0, 0.48, 1]}
         style={StyleSheet.absoluteFill}
       />
 
-      <Animated.View
-        pointerEvents="none"
-        style={[
-          StyleSheet.absoluteFill,
-          atmosphereStyle,
+      <AnimatedGradient
+        colors={[
+          'rgba(105,70,232,0.34)',
+          'rgba(155,123,255,0.10)',
+          'rgba(155,123,255,0)',
         ]}
-      >
-        <LinearGradient
-          colors={[
-            'rgba(123,63,242,0.20)',
-            'rgba(0,212,255,0.07)',
-            'rgba(255,107,222,0.13)',
-            'rgba(17,24,39,0)',
-          ]}
-          locations={[0, 0.32, 0.68, 1]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
-      </Animated.View>
-
-      <AuroraBlob
-        color="rgba(123,63,242,0.38)"
-        duration={11000}
-        range={{
-          x: [-35, 55],
-          y: [25, -35],
-        }}
-        style={styles.violet}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.topGlow, topGlowStyle]}
+        pointerEvents="none"
       />
 
-      <AuroraBlob
-        color="rgba(0,212,255,0.28)"
-        duration={14000}
-        range={{
-          x: [35, -45],
-          y: [-20, 45],
-        }}
-        style={styles.cyan}
+      <AnimatedGradient
+        colors={[
+          'rgba(255,159,188,0)',
+          'rgba(255,159,188,0.07)',
+          'rgba(232,111,153,0.22)',
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.bottomGlow, bottomGlowStyle]}
+        pointerEvents="none"
       />
 
-      <AuroraBlob
-        color="rgba(255,107,222,0.28)"
-        duration={16000}
-        range={{
-          x: [-25, 35],
-          y: [30, -25],
-        }}
-        style={styles.pink}
+      <FloatingOrb
+        color="rgba(155,123,255,0.30)"
+        duration={12000}
+        delay={200}
+        style={styles.orbOne}
       />
 
-      <View style={styles.vignette} pointerEvents="none" />
+      <FloatingOrb
+        color="rgba(255,159,188,0.24)"
+        duration={14500}
+        delay={900}
+        style={styles.orbTwo}
+      />
+
+      <FloatingOrb
+        color="rgba(120,185,255,0.18)"
+        duration={17000}
+        delay={1400}
+        style={styles.orbThree}
+      />
 
       <View style={styles.content}>
         {children}
@@ -180,39 +241,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: 'hidden',
-    backgroundColor: '#111827',
+    backgroundColor: colors.background,
   },
 
   content: {
     flex: 1,
   },
 
-  blob: {
+  topGlow: {
     position: 'absolute',
-    width: 330,
-    height: 330,
-    borderRadius: 165,
+    width: 460,
+    height: 460,
+    top: -210,
+    left: -130,
+    borderRadius: 230,
+  },
+
+  bottomGlow: {
+    position: 'absolute',
+    width: 420,
+    height: 420,
+    bottom: -200,
+    right: -140,
+    borderRadius: 210,
+  },
+
+  floatingOrb: {
+    position: 'absolute',
+    width: 190,
+    height: 190,
+    borderRadius: 95,
     overflow: 'hidden',
   },
 
-  violet: {
-    top: -110,
-    left: -120,
+  orbOne: {
+    top: '18%',
+    left: '-12%',
   },
 
-  cyan: {
-    top: '30%',
-    right: -150,
+  orbTwo: {
+    top: '48%',
+    right: '-18%',
   },
 
-  pink: {
-    bottom: -120,
-    left: '18%',
-  },
-
-  vignette: {
-    ...StyleSheet.absoluteFillObject,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.025)',
+  orbThree: {
+    bottom: '8%',
+    left: '28%',
   },
 });
