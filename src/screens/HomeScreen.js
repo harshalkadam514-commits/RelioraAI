@@ -10,6 +10,9 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, radius, shadow } from '../theme';
+import PremiumBackground from '../components/premium/PremiumBackground';
+import GlassCard from '../components/premium/GlassCard';
+import AnimatedPressable from '../components/premium/AnimatedPressable';
 
 const quickActions = [
   { icon: 'chatbubble-ellipses-outline', label: 'Talk to me' },
@@ -180,8 +183,9 @@ export default function HomeScreen({ onNavigate }) {
   });
 
   return (
-    <View style={styles.container}>
-      <ScrollView
+    <PremiumBackground intensity={1}>
+      <View style={styles.container}>
+        <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
@@ -245,6 +249,7 @@ export default function HomeScreen({ onNavigate }) {
             style={styles.modeCard}
             onPress={() => onNavigate?.('personalization')}
           >
+            <GlassCard style={styles.glassFill}>
             <View style={styles.modeIcon}>
               <Ionicons name="people-outline" size={22} color={colors.primary} />
             </View>
@@ -259,7 +264,8 @@ export default function HomeScreen({ onNavigate }) {
               size={20}
               color={colors.textMuted}
             />
-            </AnimatedCard>
+                        </GlassCard>
+</AnimatedCard>
           </Animated.View>
 
           <View style={styles.sectionHeader}>
@@ -303,7 +309,7 @@ export default function HomeScreen({ onNavigate }) {
           </View>
 
           <Animated.View style={entrance(moodAnim, 18)}>
-            <View style={styles.moodCard}>
+            <GlassCard style={styles.moodCard}>
             <Text style={styles.moodQuestion}>
               How are you feeling today?
             </Text>
@@ -316,7 +322,7 @@ export default function HomeScreen({ onNavigate }) {
                 </Pressable>
               ))}
             </View>
-            </View>
+            </GlassCard>
           </Animated.View>
 
           <View style={styles.sectionHeader}>
@@ -356,24 +362,32 @@ export default function HomeScreen({ onNavigate }) {
           <View style={styles.footerSpace} />
         </Animated.View>
       </ScrollView>
-    </View>
+      </View>
+    </PremiumBackground>
   );
 }
 
 function Feature({ icon, title, subtitle, onPress }) {
   return (
     <AnimatedCard style={styles.featureCard} onPress={onPress}>
+<GlassCard style={styles.glassFill}>
       <View style={styles.featureIcon}>
         <Ionicons name={icon} size={22} color={colors.primary} />
       </View>
 
       <Text style={styles.featureTitle}>{title}</Text>
       <Text style={styles.featureSubtitle}>{subtitle}</Text>
-    </AnimatedCard>
+    
+</GlassCard>
+</AnimatedCard>
   );
 }
 
 const styles = StyleSheet.create({
+  glassFill: {
+    flex: 1,
+    width: '100%',
+  },
   container: {
     flex: 1,
     backgroundColor: colors.background,
