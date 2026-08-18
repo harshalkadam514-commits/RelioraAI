@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { Easing } from 'react-native';
 import { colors, typography, spacing, radius, shadow } from '../theme';
 import PremiumBackground from '../components/premium/PremiumBackground';
 import GlassCard from '../components/premium/GlassCard';
@@ -67,6 +68,9 @@ function AnimatedCard({ children, style, onPress }) {
 
 export default function HomeScreen({ onNavigate }) {
   const pulse = useRef(new Animated.Value(1)).current;
+  const orbFloat = useRef(new Animated.Value(0)).current;
+  const orbBreath = useRef(new Animated.Value(0)).current;
+  const orbGlow = useRef(new Animated.Value(0)).current;
   const fade = useRef(new Animated.Value(0)).current;
   const rise = useRef(new Animated.Value(24)).current;
 
@@ -85,19 +89,73 @@ export default function HomeScreen({ onNavigate }) {
     const pulseLoop = Animated.loop(
       Animated.sequence([
         Animated.timing(pulse, {
-          toValue: 1.08,
-          duration: 1900,
+          toValue: 1.045,
+          duration: 2200,
           useNativeDriver: true,
         }),
         Animated.timing(pulse, {
           toValue: 1,
-          duration: 1900,
+          duration: 2200,
           useNativeDriver: true,
         }),
       ])
     );
 
+    const floatLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(orbFloat, {
+          toValue: 1,
+          duration: 4200,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(orbFloat, {
+          toValue: 0,
+          duration: 4200,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const breathLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(orbBreath, {
+          toValue: 1,
+          duration: 2600,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(orbBreath, {
+          toValue: 0,
+          duration: 2600,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const glowLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(orbGlow, {
+          toValue: 1,
+          duration: 3000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: false,
+        }),
+        Animated.timing(orbGlow, {
+          toValue: 0,
+          duration: 3000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: false,
+        }),
+      ])
+    );
+
     pulseLoop.start();
+    floatLoop.start();
+    breathLoop.start();
+    glowLoop.start();
 
     Animated.parallel([
       Animated.timing(fade, {
@@ -161,6 +219,9 @@ export default function HomeScreen({ onNavigate }) {
 
     return () => {
       pulseLoop.stop();
+      floatLoop.stop();
+      breathLoop.stop();
+      glowLoop.stop();
     };
   }, []);
 
@@ -220,11 +281,53 @@ export default function HomeScreen({ onNavigate }) {
             <Animated.View
               style={[
                 styles.orbGlow,
-                { transform: [{ scale: pulse }] },
+                {
+                  transform: [
+                    {
+                      translateY: orbFloat.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [8, -18],
+                      }),
+                    },
+                    {
+                      scale: Animated.multiply(
+                        pulse,
+                        orbGlow.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [0.96, 1.16],
+                        })
+                      ),
+                    },
+                  ],
+                  opacity: orbGlow.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.16, 0.38],
+                  }),
+                },
               ]}
             />
 
-            <Animated.View style={{ transform: [{ scale: pulse }] }}>
+            <Animated.View
+              style={{
+                transform: [
+                  {
+                    translateY: orbFloat.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [8, -18],
+                    }),
+                  },
+                  {
+                    scale: Animated.multiply(
+                      pulse,
+                      orbBreath.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 1.035],
+                      })
+                    ),
+                  },
+                ],
+              }}
+            >
               <LinearGradient
                 colors={['#D9C8FF', colors.primary, colors.accentSoft]}
                 start={{ x: 0.1, y: 0.1 }}
