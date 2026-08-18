@@ -76,17 +76,84 @@ function AnimatedCard({ children, style, onPress }) {
 
 
 function FloatingOrb() {
+  const float = useRef(new Animated.Value(0)).current;
+  const breathe = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const floatLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(float, {
+          toValue: 1,
+          duration: 3600,
+          useNativeDriver: true,
+        }),
+        Animated.timing(float, {
+          toValue: 0,
+          duration: 3600,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const breatheLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(breathe, {
+          toValue: 1,
+          duration: 2600,
+          useNativeDriver: true,
+        }),
+        Animated.timing(breathe, {
+          toValue: 0,
+          duration: 2600,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    floatLoop.start();
+    breatheLoop.start();
+
+    return () => {
+      floatLoop.stop();
+      breatheLoop.stop();
+    };
+  }, [float, breathe]);
+
+  const translateY = float.interpolate({
+    inputRange: [0, 1],
+    outputRange: [8, -12],
+  });
+
+  const scale = breathe.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.035],
+  });
+
   return (
-    <LinearGradient
-      colors={['#D9C8FF', colors.primary, colors.accentSoft]}
-      start={{ x: 0.1, y: 0.1 }}
-      end={{ x: 0.9, y: 0.9 }}
-      style={styles.orb}
+    <Animated.View
+      style={[
+        styles.orbStage,
+        {
+          transform: [
+            { translateY },
+            { scale },
+          ],
+        },
+      ]}
     >
-      <View style={styles.orbInner}>
-        <Ionicons name="sparkles" size={38} color="#FFFFFF" />
-      </View>
-    </LinearGradient>
+      <LinearGradient
+        colors={['#BDF7FF', '#00D4FF', '#6C63FF', '#7B3FF2']}
+        locations={[0, 0.35, 0.72, 1]}
+        start={{ x: 0.08, y: 0.08 }}
+        end={{ x: 0.92, y: 0.92 }}
+        style={styles.orb}
+      >
+        <View style={styles.orbHighlight} />
+        <View style={styles.orbInner}>
+          <Ionicons name="sparkles" size={38} color="#FFFFFF" />
+        </View>
+      </LinearGradient>
+    </Animated.View>
   );
 }
 
@@ -455,6 +522,22 @@ const styles = StyleSheet.create({
     borderRadius: 80,
     backgroundColor: colors.primary,
     opacity: 0.18,
+  },
+
+  orbStage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  orbHighlight: {
+    position: 'absolute',
+    top: 13,
+    left: 18,
+    width: 62,
+    height: 30,
+    borderRadius: 30,
+    backgroundColor: 'rgba(255,255,255,0.24)',
+    transform: [{ rotate: '-28deg' }],
   },
 
   orb: {
