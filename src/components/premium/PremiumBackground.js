@@ -179,7 +179,7 @@ export default function PremiumBackground({
         colors={[
           colors.backgroundSoft,
           colors.background,
-          '#05050C',
+          '#111827',
         ]}
         locations={[0, 0.48, 1]}
         style={StyleSheet.absoluteFill}
@@ -187,9 +187,9 @@ export default function PremiumBackground({
 
       <AnimatedGradient
         colors={[
-          'rgba(105,70,232,0.34)',
-          'rgba(155,123,255,0.10)',
-          'rgba(155,123,255,0)',
+          'rgba(123,63,242,0.30)',
+          'rgba(154,108,255,0.10)',
+          'rgba(154,108,255,0)',
         ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -199,9 +199,9 @@ export default function PremiumBackground({
 
       <AnimatedGradient
         colors={[
-          'rgba(255,159,188,0)',
-          'rgba(255,159,188,0.07)',
-          'rgba(232,111,153,0.22)',
+          'rgba(255,107,222,0)',
+          'rgba(255,107,222,0.08)',
+          'rgba(255,107,222,0.20)',
         ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -210,21 +210,21 @@ export default function PremiumBackground({
       />
 
       <FloatingOrb
-        color="rgba(155,123,255,0.30)"
+        color="rgba(123,63,242,0.30)"
         duration={12000}
         delay={200}
         style={styles.orbOne}
       />
 
       <FloatingOrb
-        color="rgba(255,159,188,0.24)"
+        color="rgba(255,107,222,0.24)"
         duration={14500}
         delay={900}
         style={styles.orbTwo}
       />
 
       <FloatingOrb
-        color="rgba(120,185,255,0.18)"
+        color="rgba(0,212,255,0.20)"
         duration={17000}
         delay={1400}
         style={styles.orbThree}
