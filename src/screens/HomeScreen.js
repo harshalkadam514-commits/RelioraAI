@@ -418,8 +418,10 @@ const styles = StyleSheet.create({
 
   logo: {
     color: colors.text,
-    ...typography.display,
+    ...typography.title,
+    fontSize: 29,
     marginTop: 5,
+    letterSpacing: -0.8,
   },
 
   profile: {
@@ -458,30 +460,38 @@ const styles = StyleSheet.create({
   },
 
   orb: {
-    width: 132,
-    height: 132,
-    borderRadius: 66,
+    width: 148,
+    height: 148,
+    borderRadius: 74,
     padding: 4,
+    ...shadow.glow,
   },
 
   orbInner: {
     flex: 1,
-    borderRadius: 62,
-    backgroundColor: 'rgba(20,17,32,0.35)',
+    borderRadius: 70,
+    backgroundColor: 'rgba(255,255,255,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   greeting: {
     color: colors.text,
-    ...typography.display,
-    marginTop: 26,
+    ...typography.hero,
+    marginTop: 28,
+    textAlign: 'center',
+    textShadowColor: 'rgba(168,85,247,0.55)',
+    textShadowOffset: { width: 0, height: 4 },
+    textShadowRadius: 18,
   },
 
   subtitle: {
     color: colors.textSecondary,
     ...typography.body,
-    marginTop: 8,
+    fontSize: 17,
+    marginTop: 10,
+    textAlign: 'center',
+    letterSpacing: 0.2,
   },
 
   modeCard: {
