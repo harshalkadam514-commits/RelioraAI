@@ -75,15 +75,25 @@ function AnimatedCard({ children, style, onPress }) {
 }
 
 
-function FloatingOrb({ pulse }) {
-  const orbScale = pulse.interpolate({
-    inputRange: [1, 1.08],
-    outputRange: [1, 1.025],
+function FloatingOrb({ pulse, floatAnim, breathAnim, glowAnim }) {
+  const floatY = floatAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -10],
   });
 
-  const orbOpacity = pulse.interpolate({
+  const breathScale = breathAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.035],
+  });
+
+  const pulseScale = pulse.interpolate({
     inputRange: [1, 1.08],
-    outputRange: [0.96, 1],
+    outputRange: [1, 1.012],
+  });
+
+  const glowOpacity = glowAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.12, 0.30],
   });
 
   return (
@@ -91,11 +101,23 @@ function FloatingOrb({ pulse }) {
       style={[
         styles.orbAnimated,
         {
-          opacity: orbOpacity,
-          transform: [{ scale: orbScale }],
+          transform: [
+            { translateY: floatY },
+            { scale: Animated.multiply(breathScale, pulseScale) },
+          ],
         },
       ]}
     >
+      <Animated.View
+        pointerEvents="none"
+        style={[
+          styles.orbGlowAnimated,
+          {
+            opacity: glowOpacity,
+          },
+        ]}
+      />
+
       <LinearGradient
         colors={['#E9DEFF', colors.primary, colors.accentSoft]}
         start={{ x: 0.05, y: 0.05 }}
@@ -118,6 +140,9 @@ export default function HomeScreen({ onNavigate }) {
 
   const headerAnim = useRef(new Animated.Value(0)).current;
   const orbAnim = useRef(new Animated.Value(0)).current;
+  const orbFloat = useRef(new Animated.Value(0)).current;
+  const orbBreath = useRef(new Animated.Value(0)).current;
+  const orbGlow = useRef(new Animated.Value(0)).current;
   const modeAnim = useRef(new Animated.Value(0)).current;
   const actionAnims = useRef(
     quickActions.map(() => new Animated.Value(0))
@@ -144,6 +169,55 @@ export default function HomeScreen({ onNavigate }) {
     );
 
     pulseLoop.start();
+
+    const floatLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(orbFloat, {
+          toValue: 1,
+          duration: 2400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(orbFloat, {
+          toValue: 0,
+          duration: 2400,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const breathLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(orbBreath, {
+          toValue: 1,
+          duration: 2100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(orbBreath, {
+          toValue: 0,
+          duration: 2100,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const glowLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(orbGlow, {
+          toValue: 1,
+          duration: 1800,
+          useNativeDriver: true,
+        }),
+        Animated.timing(orbGlow, {
+          toValue: 0,
+          duration: 1800,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    floatLoop.start();
+    breathLoop.start();
+    glowLoop.start();
 
     Animated.parallel([
       Animated.timing(fade, {
@@ -207,6 +281,9 @@ export default function HomeScreen({ onNavigate }) {
 
     return () => {
       pulseLoop.stop();
+      floatLoop.stop();
+      breathLoop.stop();
+      glowLoop.stop();
     };
   }, []);
 
@@ -263,7 +340,7 @@ export default function HomeScreen({ onNavigate }) {
 
           <Animated.View style={entrance(orbAnim, 20)}>
   <View style={styles.orbContainer}>
-    <FloatingOrb pulse={pulse} />
+    <FloatingOrb pulse={pulse} floatAnim={orbFloat} breathAnim={orbBreath} glowAnim={orbGlow} />
     <Text style={styles.greeting}>Hey, Harsh 👋</Text>
     <Text style={styles.subtitle}>
       I'm here. What's on your mind?
@@ -480,7 +557,22 @@ const styles = StyleSheet.create({
     opacity: 0.18,
   },
 
+  orbGlowAnimated: {
+    position: 'absolute',
+    width: 158,
+    height: 158,
+    borderRadius: 79,
+    backgroundColor: colors.primary,
+    shadowColor: colors.primary,
+    shadowOpacity: 0.45,
+    shadowRadius: 28,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 12,
+  },
+
   orbAnimated: {
+    width: 160,
+    height: 160,
     alignItems: 'center',
     justifyContent: 'center',
   },
