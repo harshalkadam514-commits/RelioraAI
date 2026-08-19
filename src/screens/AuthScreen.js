@@ -266,8 +266,8 @@ const styles = StyleSheet.create({
 
   tagline: {
     color: colors.textMuted,
-    fontSize: 8,
-    marginTop: 4,
+    fontSize: 13,
+    marginTop: 5,
   },
 
   card: {
@@ -280,22 +280,22 @@ const styles = StyleSheet.create({
 
   title: {
     color: colors.text,
-    fontSize: 21,
+    fontSize: 25,
     fontWeight: '900',
   },
 
   subtitle: {
     color: colors.textMuted,
-    fontSize: 8,
-    lineHeight: 12,
+    fontSize: 14,
+    lineHeight: 20,
     marginTop: 5,
     marginBottom: 16,
   },
 
   label: {
     color: colors.textSecondary,
-    fontSize: 8,
-    fontWeight: '750',
+    fontSize: 13,
+    fontWeight: '700',
     marginTop: 10,
     marginBottom: 6,
   },
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: colors.text,
-    fontSize: 9,
+    fontSize: 15,
     paddingVertical: 0,
   },
 
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
 
   primaryText: {
     color: '#FFFFFF',
-    fontSize: 9,
+    fontSize: 15,
     fontWeight: '900',
   },
 
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
 
   dividerText: {
     color: colors.textMuted,
-    fontSize: 6,
+    fontSize: 12,
     fontWeight: '800',
   },
 
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
 
   secondaryText: {
     color: colors.text,
-    fontSize: 8,
+    fontSize: 14,
     fontWeight: '800',
   },
 
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
 
   modeText: {
     color: colors.textMuted,
-    fontSize: 7,
+    fontSize: 13,
   },
 
   modeAction: {
@@ -400,8 +400,8 @@ const styles = StyleSheet.create({
   securityText: {
     flex: 1,
     color: colors.textMuted,
-    fontSize: 6,
-    lineHeight: 9,
+    fontSize: 11,
+    lineHeight: 16,
     textAlign: 'center',
   },
 });

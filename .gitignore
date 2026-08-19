@@ -61,3 +61,6 @@ App.before-auth-fix.js
 
 # Local source backups
 *.pre-*.js
+
+# Local backup files
+src/screens/*.before-font-fix.js

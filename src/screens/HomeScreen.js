@@ -460,16 +460,16 @@ const styles = StyleSheet.create({
   },
 
   orb: {
-    width: 148,
-    height: 148,
-    borderRadius: 74,
+    width: 136,
+    height: 136,
+    borderRadius: 68,
     padding: 4,
     ...shadow.glow,
   },
 
   orbInner: {
     flex: 1,
-    borderRadius: 70,
+    borderRadius: 64,
     backgroundColor: 'rgba(255,255,255,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
   greeting: {
     color: colors.text,
     ...typography.hero,
-    marginTop: 28,
+    marginTop: 20,
     textAlign: 'center',
     textShadowColor: 'rgba(168,85,247,0.55)',
     textShadowOffset: { width: 0, height: 4 },
@@ -488,14 +488,14 @@ const styles = StyleSheet.create({
   subtitle: {
     color: colors.textSecondary,
     ...typography.body,
-    fontSize: 17,
-    marginTop: 10,
+    fontSize: 15,
+    marginTop: 7,
     textAlign: 'center',
     letterSpacing: 0.2,
   },
 
   modeCard: {
-    marginTop: spacing.xl,
+    marginTop: 22,
     padding: spacing.md,
     borderRadius: radius.xl,
     backgroundColor: colors.surface,
@@ -564,7 +564,7 @@ const styles = StyleSheet.create({
 
   actionCard: {
     width: '100%',
-    height: 116,
+    height: 110,
     padding: spacing.md,
     borderRadius: radius.lg,
     backgroundColor: colors.surface,
@@ -638,7 +638,7 @@ const styles = StyleSheet.create({
   featureCard: {
     flex: 1,
     padding: spacing.md,
-    minHeight: 128,
+    minHeight: 116,
     borderRadius: radius.xl,
     backgroundColor: colors.surface,
     borderWidth: 1,

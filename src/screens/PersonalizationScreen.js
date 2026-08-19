@@ -287,22 +287,22 @@ const styles = StyleSheet.create({
 
   eyebrow: {
     color: colors.textMuted,
-    fontSize: 8,
+    fontSize: 11,
     letterSpacing: 1.5,
     fontWeight: '800',
   },
 
   title: {
     color: colors.text,
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: '900',
     marginTop: 3,
   },
 
   subtitle: {
     color: colors.textMuted,
-    fontSize: 9,
-    marginTop: 4,
+    fontSize: 14,
+    marginTop: 6,
   },
 
   home: {
@@ -343,14 +343,14 @@ const styles = StyleSheet.create({
 
   profileTitle: {
     color: colors.text,
-    fontSize: 11,
+    fontSize: 16,
     fontWeight: '900',
   },
 
   profileText: {
     color: colors.textMuted,
-    fontSize: 7,
-    marginTop: 3,
+    fontSize: 13,
+    marginTop: 4,
   },
 
   activeBadge: {
@@ -362,23 +362,23 @@ const styles = StyleSheet.create({
 
   activeText: {
     color: colors.success,
-    fontSize: 5,
+    fontSize: 9,
     fontWeight: '900',
     letterSpacing: 0.4,
   },
 
   sectionTitle: {
     color: colors.text,
-    fontSize: 13,
-    fontWeight: '850',
+    fontSize: 19,
+    fontWeight: '800',
     marginTop: 23,
     marginBottom: 10,
   },
 
   label: {
     color: colors.textSecondary,
-    fontSize: 8,
-    fontWeight: '750',
+    fontSize: 14,
+    fontWeight: '700',
     marginTop: 12,
     marginBottom: 7,
   },
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
 
   optionText: {
     color: colors.textMuted,
-    fontSize: 8,
+    fontSize: 14,
     fontWeight: '700',
   },
 
@@ -437,14 +437,14 @@ const styles = StyleSheet.create({
 
   previewTitle: {
     color: colors.text,
-    fontSize: 9,
-    fontWeight: '850',
+    fontSize: 14,
+    fontWeight: '800',
   },
 
   previewText: {
     color: colors.textMuted,
-    fontSize: 7,
-    lineHeight: 11,
+    fontSize: 13,
+    lineHeight: 19,
     marginTop: 3,
   },
 
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
 
   resetText: {
     color: colors.primary,
-    fontSize: 8,
+    fontSize: 14,
     fontWeight: '800',
   },
 });
