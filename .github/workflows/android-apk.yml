@@ -33,9 +33,6 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Generate Android project
-        run: pnpm exec expo prebuild --platform android --non-interactive
-
       - name: Build APK
         working-directory: android
         run: ./gradlew assembleRelease --no-daemon
