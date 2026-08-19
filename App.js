@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { BackHandler, View, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import AuthScreen from './src/screens/AuthScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';
@@ -30,6 +30,28 @@ const screenLoaders = {
 export default function App() {
   const [stage, setStage] = useState('auth');
   const [currentScreen, setCurrentScreen] = useState('home');
+
+  useEffect(() => {
+    if (stage !== 'main') {
+      return;
+    }
+
+    const handleBackPress = () => {
+      if (currentScreen !== 'home') {
+        setCurrentScreen('home');
+        return true;
+      }
+
+      return false;
+    };
+
+    const subscription = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackPress
+    );
+
+    return () => subscription.remove();
+  }, [stage, currentScreen]);
 
   const handleAuthDone = () => {
     setStage('onboarding');

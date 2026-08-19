@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
 
   avatarText: {
     color: '#FFFFFF',
-    fontSize: 31,
+    fontSize: 28,
     fontWeight: '900',
   },
 

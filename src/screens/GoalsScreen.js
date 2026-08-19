@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
 
   progressValue: {
     color: colors.text,
-    fontSize: 36,
+    fontSize: 28,
     fontWeight: '900',
     marginTop: 4,
   },

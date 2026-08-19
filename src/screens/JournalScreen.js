@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   },
 
   moodEmoji: {
-    fontSize: 27,
+    fontSize: 26,
   },
 
   editor: {

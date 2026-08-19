@@ -20,6 +20,7 @@ import RAnimated, {
 } from 'react-native-reanimated';
 import { colors, typography, spacing, radius, shadow } from '../theme';
 import PremiumBackground from '../components/premium/PremiumBackground';
+import GlassCard from '../components/premium/GlassCard';
 import AnimatedPressable from '../components/premium/AnimatedPressable';
 
 const quickActions = [
@@ -352,7 +353,7 @@ export default function HomeScreen({ onNavigate }) {
             style={styles.modeCard}
             onPress={() => onNavigate?.('personalization')}
           >
-            <View style={styles.modeContentWrapper}>
+            <GlassCard style={styles.glassFill}>
             <View style={styles.modeIcon}>
               <Ionicons name="people-outline" size={22} color={colors.primary} />
             </View>
@@ -367,8 +368,8 @@ export default function HomeScreen({ onNavigate }) {
               size={20}
               color={colors.textMuted}
             />
-            </View>
-          </AnimatedCard>
+                        </GlassCard>
+</AnimatedCard>
           </Animated.View>
 
           <View style={styles.sectionHeader}>
@@ -407,36 +408,25 @@ export default function HomeScreen({ onNavigate }) {
           </View>
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Today’s focus</Text>
-            <Text style={styles.sectionHint}>For you</Text>
+            <Text style={styles.sectionTitle}>Daily check-in</Text>
+            <Text style={styles.sectionHint}>Private</Text>
           </View>
 
           <Animated.View style={entrance(moodAnim, 18)}>
-            <AnimatedCard
-              style={styles.focusCard}
-              onPress={() => onNavigate?.('goals')}
-            >
-              <View style={styles.focusIcon}>
-                <Ionicons
-                  name="locate-outline"
-                  size={24}
-                  color={colors.primary}
-                />
-              </View>
+            <GlassCard style={styles.moodCard}>
+            <Text style={styles.moodQuestion}>
+              How are you feeling today?
+            </Text>
 
-              <View style={styles.focusContent}>
-                <Text style={styles.focusTitle}>What matters most today?</Text>
-                <Text style={styles.focusSubtitle}>
-                  Set one small goal and make progress.
-                </Text>
-              </View>
-
-              <Ionicons
-                name="chevron-forward"
-                size={20}
-                color={colors.textMuted}
-              />
-            </AnimatedCard>
+            <View style={styles.moodRow}>
+              {moods.map((mood) => (
+                <Pressable key={mood.label} style={styles.moodButton}>
+                  <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+                  <Text style={styles.moodLabel}>{mood.label}</Text>
+                </Pressable>
+              ))}
+            </View>
+            </GlassCard>
           </Animated.View>
 
           <View style={styles.sectionHeader}>
@@ -484,6 +474,7 @@ export default function HomeScreen({ onNavigate }) {
 function Feature({ icon, title, subtitle, onPress }) {
   return (
     <AnimatedCard style={styles.featureCard} onPress={onPress}>
+<GlassCard style={styles.glassFill}>
       <View style={styles.featureIcon}>
         <Ionicons name={icon} size={22} color={colors.primary} />
       </View>
@@ -491,12 +482,16 @@ function Feature({ icon, title, subtitle, onPress }) {
       <Text style={styles.featureTitle}>{title}</Text>
       <Text style={styles.featureSubtitle}>{subtitle}</Text>
     
-
+</GlassCard>
 </AnimatedCard>
   );
 }
 
 const styles = StyleSheet.create({
+  glassFill: {
+    flex: 1,
+    width: '100%',
+  },
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -729,46 +724,6 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
   },
 
-  focusCard: {
-    width: '100%',
-    minHeight: 92,
-    padding: spacing.md,
-    borderRadius: radius.lg,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  focusIcon: {
-    width: 46,
-    height: 46,
-    borderRadius: 14,
-    backgroundColor: 'rgba(166,131,255,0.12)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-
-  focusContent: {
-    flex: 1,
-  },
-
-  focusTitle: {
-    color: colors.text,
-    fontSize: 15,
-    fontWeight: '900',
-    lineHeight: 20,
-  },
-
-  focusSubtitle: {
-    color: colors.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-    marginTop: 3,
-  },
-
   moodCard: {
     padding: spacing.lg,
     borderRadius: radius.xl,
@@ -815,39 +770,35 @@ const styles = StyleSheet.create({
   },
 
   featureCard: {
-    width: '48%',
-    height: 142,
-    height: 128,
-    padding: spacing.md,
+    flex: 1,
+    padding: spacing.sm,
+    minHeight: 96,
     borderRadius: radius.lg,
     backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: colors.border,
-    justifyContent: 'flex-start',
+    borderColor: 'rgba(166,131,255,0.18)',
+    ...shadow.card,
   },
 
   featureIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 13,
+    width: 34,
+    height: 34,
+    borderRadius: radius.md,
     backgroundColor: 'rgba(166,131,255,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: 6,
   },
 
   featureTitle: {
     color: colors.text,
-    fontSize: 16,
-    fontWeight: '900',
-    lineHeight: 20,
+    ...typography.body,
   },
 
   featureSubtitle: {
     color: colors.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-    marginTop: 4,
+    ...typography.caption,
+    marginTop: 2,
   },
 
   footerSpace: {
