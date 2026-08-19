@@ -75,18 +75,39 @@ function AnimatedCard({ children, style, onPress }) {
 }
 
 
-function FloatingOrb() {
+function FloatingOrb({ pulse }) {
+  const orbScale = pulse.interpolate({
+    inputRange: [1, 1.08],
+    outputRange: [1, 1.025],
+  });
+
+  const orbOpacity = pulse.interpolate({
+    inputRange: [1, 1.08],
+    outputRange: [0.96, 1],
+  });
+
   return (
-    <LinearGradient
-      colors={['#D9C8FF', colors.primary, colors.accentSoft]}
-      start={{ x: 0.1, y: 0.1 }}
-      end={{ x: 0.9, y: 0.9 }}
-      style={styles.orb}
+    <Animated.View
+      style={[
+        styles.orbAnimated,
+        {
+          opacity: orbOpacity,
+          transform: [{ scale: orbScale }],
+        },
+      ]}
     >
-      <View style={styles.orbInner}>
-        <Ionicons name="sparkles" size={38} color="#FFFFFF" />
-      </View>
-    </LinearGradient>
+      <LinearGradient
+        colors={['#E9DEFF', colors.primary, colors.accentSoft]}
+        start={{ x: 0.05, y: 0.05 }}
+        end={{ x: 0.95, y: 0.95 }}
+        style={styles.orb}
+      >
+        <View style={styles.orbHalo} />
+        <View style={styles.orbInner}>
+          <Ionicons name="sparkles" size={34} color="#FFFFFF" />
+        </View>
+      </LinearGradient>
+    </Animated.View>
   );
 }
 
@@ -242,7 +263,7 @@ export default function HomeScreen({ onNavigate }) {
 
           <Animated.View style={entrance(orbAnim, 20)}>
   <View style={styles.orbContainer}>
-    <FloatingOrb />
+    <FloatingOrb pulse={pulse} />
     <Text style={styles.greeting}>Hey, Harsh 👋</Text>
     <Text style={styles.subtitle}>
       I'm here. What's on your mind?
@@ -332,7 +353,7 @@ export default function HomeScreen({ onNavigate }) {
           </Animated.View>
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Your space</Text>
+            <Text style={styles.featureSectionTitle}>Your space</Text>
           </View>
 
           <View style={styles.featureRow}>
@@ -459,12 +480,26 @@ const styles = StyleSheet.create({
     opacity: 0.18,
   },
 
+  orbAnimated: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   orb: {
     width: 136,
     height: 136,
     borderRadius: 68,
     padding: 4,
     ...shadow.glow,
+  },
+
+  orbHalo: {
+    position: 'absolute',
+    width: 122,
+    height: 122,
+    borderRadius: 61,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.28)',
   },
 
   orbInner: {
@@ -478,7 +513,9 @@ const styles = StyleSheet.create({
   greeting: {
     color: colors.text,
     ...typography.hero,
-    marginTop: 20,
+    fontSize: 25,
+    lineHeight: 31,
+    marginTop: 18,
     textAlign: 'center',
     textShadowColor: 'rgba(168,85,247,0.55)',
     textShadowOffset: { width: 0, height: 4 },
@@ -629,17 +666,22 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
 
+  featureSectionTitle: {
+    color: colors.text,
+    ...typography.subheading,
+  },
+
   featureRow: {
     flexDirection: 'row',
-    gap: 12,
-    marginBottom: 12,
+    gap: 10,
+    marginBottom: 10,
   },
 
   featureCard: {
     flex: 1,
-    padding: spacing.md,
-    minHeight: 116,
-    borderRadius: radius.xl,
+    padding: spacing.sm,
+    minHeight: 96,
+    borderRadius: radius.lg,
     backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: 'rgba(166,131,255,0.18)',
@@ -647,13 +689,13 @@ const styles = StyleSheet.create({
   },
 
   featureIcon: {
-    width: 40,
-    height: 40,
+    width: 34,
+    height: 34,
     borderRadius: radius.md,
     backgroundColor: 'rgba(166,131,255,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.sm,
+    marginBottom: 6,
   },
 
   featureTitle: {
@@ -664,7 +706,7 @@ const styles = StyleSheet.create({
   featureSubtitle: {
     color: colors.textMuted,
     ...typography.caption,
-    marginTop: 3,
+    marginTop: 2,
   },
 
   footerSpace: {
