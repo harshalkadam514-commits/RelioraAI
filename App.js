@@ -1,51 +1,30 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-
 import AuthScreen from './src/screens/AuthScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';
-import HomeScreen from './src/screens/HomeScreen';
-import ChatScreen from './src/screens/ChatScreen';
-import JournalScreen from './src/screens/JournalScreen';
-import GoalsScreen from './src/screens/GoalsScreen';
-import InsightsScreen from './src/screens/InsightsScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
-import KnowledgeScreen from './src/screens/KnowledgeScreen';
-import SettingsScreen from './src/screens/SettingsScreen';
-import MemoryScreen from './src/screens/MemoryScreen';
-import MoodScreen from './src/screens/MoodScreen';
-import VoiceScreen from './src/screens/VoiceScreen';
-import PersonalizationScreen from './src/screens/PersonalizationScreen';
-import ProductivityScreen from './src/screens/ProductivityScreen';
-import NotificationsScreen from './src/screens/NotificationsScreen';
-import AnalyticsScreen from './src/screens/AnalyticsScreen';
-import PremiumScreen from './src/screens/PremiumScreen';
-import PrivacyScreen from './src/screens/PrivacyScreen';
-import ChatHistoryScreen from './src/screens/ChatHistoryScreen';
-import SavedMessagesScreen from './src/screens/SavedMessagesScreen';
-import SecurityScreen from './src/screens/SecurityScreen';
 
-const mainScreens = {
-  home: HomeScreen,
-  chat: ChatScreen,
-  journal: JournalScreen,
-  goals: GoalsScreen,
-  insights: InsightsScreen,
-  profile: ProfileScreen,
-  knowledge: KnowledgeScreen,
-  settings: SettingsScreen,
-  memory: MemoryScreen,
-  mood: MoodScreen,
-  voice: VoiceScreen,
-  personalization: PersonalizationScreen,
-  productivity: ProductivityScreen,
-  notifications: NotificationsScreen,
-  analytics: AnalyticsScreen,
-  premium: PremiumScreen,
-  privacy: PrivacyScreen,
-  chatHistory: ChatHistoryScreen,
-  savedMessages: SavedMessagesScreen,
-  security: SecurityScreen,
+const screenLoaders = {
+  home: () => require('./src/screens/HomeScreen').default,
+  chat: () => require('./src/screens/ChatScreen').default,
+  journal: () => require('./src/screens/JournalScreen').default,
+  goals: () => require('./src/screens/GoalsScreen').default,
+  insights: () => require('./src/screens/InsightsScreen').default,
+  profile: () => require('./src/screens/ProfileScreen').default,
+  knowledge: () => require('./src/screens/KnowledgeScreen').default,
+  settings: () => require('./src/screens/SettingsScreen').default,
+  memory: () => require('./src/screens/MemoryScreen').default,
+  mood: () => require('./src/screens/MoodScreen').default,
+  voice: () => require('./src/screens/VoiceScreen').default,
+  personalization: () => require('./src/screens/PersonalizationScreen').default,
+  productivity: () => require('./src/screens/ProductivityScreen').default,
+  notifications: () => require('./src/screens/NotificationsScreen').default,
+  analytics: () => require('./src/screens/AnalyticsScreen').default,
+  premium: () => require('./src/screens/PremiumScreen').default,
+  privacy: () => require('./src/screens/PrivacyScreen').default,
+  chatHistory: () => require('./src/screens/ChatHistoryScreen').default,
+  savedMessages: () => require('./src/screens/SavedMessagesScreen').default,
+  security: () => require('./src/screens/SecurityScreen').default,
 };
 
 export default function App() {
@@ -65,7 +44,8 @@ export default function App() {
       setStage('auth');
       return;
     }
-    if (mainScreens[screen]) {
+
+    if (screenLoaders[screen]) {
       setCurrentScreen(screen);
     }
   };
@@ -88,7 +68,8 @@ export default function App() {
     );
   }
 
-  const Screen = mainScreens[currentScreen] || HomeScreen;
+  const loadScreen = screenLoaders[currentScreen];
+  const Screen = loadScreen ? loadScreen() : screenLoaders.home();
 
   return (
     <View style={styles.container}>
