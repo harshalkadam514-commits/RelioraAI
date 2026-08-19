@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { colors, radius, shadow } from '../../theme';
+import { radius, shadow } from '../../theme';
 
 export default function GlassCard({
   children,
   style,
-  intensity = 24,
+  intensity = 35,
   tint = 'dark',
   border = true,
 }) {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   wrapper: {
     overflow: 'hidden',
     borderRadius: radius.xl,
-    backgroundColor: colors.surfaceGlass,
+    backgroundColor: 'rgba(18, 10, 42, 0.58)',
   },
 
   blur: {
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     padding: 18,
-    backgroundColor: 'rgba(255,255,255,0.035)',
+    backgroundColor: 'rgba(255, 255, 255, 0.045)',
   },
 
   border: {
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(205, 180, 255, 0.16)',
   },
 });

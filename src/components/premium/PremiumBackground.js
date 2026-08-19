@@ -14,7 +14,7 @@ import { colors } from '../../theme';
 const AnimatedGradient =
   Animated.createAnimatedComponent(LinearGradient);
 
-function FloatingOrb({ style, color, duration, delay = 0 }) {
+function FloatingOrb({ style, colorsArr, duration, delay = 0 }) {
   const progress = useSharedValue(0);
 
   useEffect(() => {
@@ -35,32 +35,16 @@ function FloatingOrb({ style, color, duration, delay = 0 }) {
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       {
-        translateX: interpolate(
-          progress.value,
-          [0, 0.5, 1],
-          [-35, 25, -35]
-        ),
+        translateX: interpolate(progress.value, [0, 0.5, 1], [-40, 30, -40]),
       },
       {
-        translateY: interpolate(
-          progress.value,
-          [0, 0.5, 1],
-          [25, -35, 25]
-        ),
+        translateY: interpolate(progress.value, [0, 0.5, 1], [30, -40, 30]),
       },
       {
-        scale: interpolate(
-          progress.value,
-          [0, 0.5, 1],
-          [0.9, 1.12, 0.9]
-        ),
+        scale: interpolate(progress.value, [0, 0.5, 1], [0.9, 1.15, 0.9]),
       },
     ],
-    opacity: interpolate(
-      progress.value,
-      [0, 0.5, 1],
-      [0.25, 0.6, 0.25]
-    ),
+    opacity: interpolate(progress.value, [0, 0.5, 1], [0.55, 0.85, 0.55]),
   }));
 
   return (
@@ -69,11 +53,7 @@ function FloatingOrb({ style, color, duration, delay = 0 }) {
       style={[styles.floatingOrb, style, animatedStyle]}
     >
       <LinearGradient
-        colors={[
-          color,
-          'rgba(255,255,255,0.02)',
-          'rgba(255,255,255,0)',
-        ]}
+        colors={colorsArr}
         start={{ x: 0.2, y: 0.2 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFill}
@@ -82,157 +62,53 @@ function FloatingOrb({ style, color, duration, delay = 0 }) {
   );
 }
 
-export default function PremiumBackground({
-  children,
-  intensity = 1,
-}) {
+export default function PremiumBackground({ children, intensity = 1 }) {
   const drift = useSharedValue(0);
-  const pulse = useSharedValue(0);
 
   useEffect(() => {
     drift.value = withRepeat(
-      withTiming(1, {
-        duration: 11000,
-        easing: Easing.inOut(Easing.ease),
-      }),
-      -1,
-      true
-    );
-
-    pulse.value = withRepeat(
-      withTiming(1, {
-        duration: 6500,
-        easing: Easing.inOut(Easing.ease),
-      }),
+      withTiming(1, { duration: 13000, easing: Easing.inOut(Easing.ease) }),
       -1,
       true
     );
   }, []);
 
-  const topGlowStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: interpolate(
-          drift.value,
-          [0, 1],
-          [-45, 45]
-        ),
-      },
-      {
-        translateY: interpolate(
-          drift.value,
-          [0, 1],
-          [-25, 55]
-        ),
-      },
-      {
-        scale: interpolate(
-          pulse.value,
-          [0, 1],
-          [1, 1.18]
-        ),
-      },
-    ],
-    opacity:
-      interpolate(
-        pulse.value,
-        [0, 1],
-        [0.42, 0.78]
-      ) * intensity,
-  }));
-
-  const bottomGlowStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: interpolate(
-          drift.value,
-          [0, 1],
-          [40, -40]
-        ),
-      },
-      {
-        translateY: interpolate(
-          drift.value,
-          [0, 1],
-          [30, -45]
-        ),
-      },
-      {
-        scale: interpolate(
-          pulse.value,
-          [0, 1],
-          [1.05, 1.22]
-        ),
-      },
-    ],
-    opacity:
-      interpolate(
-        pulse.value,
-        [0, 1],
-        [0.24, 0.52]
-      ) * intensity,
-  }));
-
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[
-          colors.backgroundSoft,
-          colors.background,
-          '#111827',
-        ]}
-        locations={[0, 0.48, 1]}
+        colors={[colors.backgroundSoft, colors.background]}
         style={StyleSheet.absoluteFill}
       />
 
-      <AnimatedGradient
-        colors={[
-          'rgba(123,63,242,0.30)',
-          'rgba(154,108,255,0.10)',
-          'rgba(154,108,255,0)',
-        ]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.topGlow, topGlowStyle]}
-        pointerEvents="none"
-      />
-
-      <AnimatedGradient
-        colors={[
-          'rgba(255,107,222,0)',
-          'rgba(255,107,222,0.08)',
-          'rgba(255,107,222,0.20)',
-        ]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.bottomGlow, bottomGlowStyle]}
-        pointerEvents="none"
-      />
-
       <FloatingOrb
-        color="rgba(123,63,242,0.30)"
+        colorsArr={['rgba(139,127,232,0.35)', 'rgba(139,127,232,0)']}
         duration={12000}
-        delay={200}
+        delay={0}
         style={styles.orbOne}
       />
 
       <FloatingOrb
-        color="rgba(255,107,222,0.24)"
-        duration={14500}
-        delay={900}
+        colorsArr={['rgba(245,201,155,0.40)', 'rgba(245,201,155,0)']}
+        duration={15000}
+        delay={600}
         style={styles.orbTwo}
       />
 
       <FloatingOrb
-        color="rgba(0,212,255,0.20)"
+        colorsArr={['rgba(244,169,192,0.35)', 'rgba(244,169,192,0)']}
         duration={17000}
-        delay={1400}
+        delay={1200}
         style={styles.orbThree}
       />
 
-      <View style={styles.content}>
-        {children}
-      </View>
+      <FloatingOrb
+        colorsArr={['rgba(125,211,192,0.30)', 'rgba(125,211,192,0)']}
+        duration={14000}
+        delay={1800}
+        style={styles.orbFour}
+      />
+
+      <View style={styles.content}>{children}</View>
     </View>
   );
 }
@@ -243,49 +119,30 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: colors.background,
   },
-
   content: {
     flex: 1,
   },
-
-  topGlow: {
-    position: 'absolute',
-    width: 460,
-    height: 460,
-    top: -210,
-    left: -130,
-    borderRadius: 230,
-  },
-
-  bottomGlow: {
-    position: 'absolute',
-    width: 420,
-    height: 420,
-    bottom: -200,
-    right: -140,
-    borderRadius: 210,
-  },
-
   floatingOrb: {
     position: 'absolute',
-    width: 190,
-    height: 190,
-    borderRadius: 95,
+    width: 340,
+    height: 340,
+    borderRadius: 170,
     overflow: 'hidden',
   },
-
   orbOne: {
-    top: '18%',
-    left: '-12%',
+    top: '-8%',
+    left: '-20%',
   },
-
   orbTwo: {
-    top: '48%',
-    right: '-18%',
+    top: '8%',
+    right: '-25%',
   },
-
   orbThree: {
-    bottom: '8%',
-    left: '28%',
+    bottom: '15%',
+    left: '-18%',
+  },
+  orbFour: {
+    bottom: '-10%',
+    right: '-15%',
   },
 });
