@@ -62,11 +62,12 @@ function AnimatedCard({ children, style, onPress }) {
   const { scale, onPressIn, onPressOut } = usePressScale();
   return (
     <Pressable
+      style={style}
       onPress={onPress}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
     >
-      <Animated.View style={[style, { transform: [{ scale }] }]}>
+      <Animated.View style={[{ width: '100%' }, { transform: [{ scale }] }]}>
         {children}
       </Animated.View>
     </Pressable>
