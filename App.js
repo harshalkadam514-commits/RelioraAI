@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BackHandler, View, StyleSheet } from 'react-native';
+import { BackHandler, View, StyleSheet, Text, TextInput } from 'react-native';
+
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.allowFontScaling = false;
 import { StatusBar } from 'expo-status-bar';
 import AuthScreen from './src/screens/AuthScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';

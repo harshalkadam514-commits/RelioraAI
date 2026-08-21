@@ -488,8 +488,8 @@ function Feature({ icon, title, subtitle, onPress }) {
         <Ionicons name={icon} size={22} color={colors.primary} />
       </View>
 
-      <Text style={styles.featureTitle}>{title}</Text>
-      <Text style={styles.featureSubtitle}>{subtitle}</Text>
+      <Text style={styles.featureTitle} allowFontScaling={false} numberOfLines={2}>{title}</Text>
+      <Text style={styles.featureSubtitle} allowFontScaling={false} numberOfLines={3}>{subtitle}</Text>
     
 
 </AnimatedCard>
@@ -817,7 +817,6 @@ const styles = StyleSheet.create({
   featureCard: {
     width: '48%',
     height: 142,
-    height: 128,
     padding: spacing.md,
     borderRadius: radius.lg,
     backgroundColor: colors.surface,
